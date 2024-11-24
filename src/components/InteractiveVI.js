@@ -120,15 +120,15 @@ const InteractiveVI = () => {
 
   // Constants for optimization
   const STEP_SIZES = {
-    BANANA: 0.2,
-    BIMODAL: 0.2,
+    BANANA: 0.1,
+    BIMODAL: 0.1,
     NESSIE: 0.1,
     MICKIE: 0.1,
     RING: 0.05,
     FUNNEL: 0.1
   };
   const STEP_SIZE = STEP_SIZES[targetType];
-  const OPTIMIZATION_STEPS = 50;
+  const OPTIMIZATION_STEPS = 100;
 
   // Target distributions
   const targetDist = useCallback((x, y) => {
@@ -273,8 +273,8 @@ const calculateElboComponents = useCallback((params = null) => {
     let crossEntropySum = 0;
     let entropySum = 0;
     
-    const GRID_SIZE = 40;
-    const GRID_EXTENT = 3; 
+    const GRID_SIZE = 100;
+    const GRID_EXTENT = 4; 
     const du = (2 * GRID_EXTENT) / GRID_SIZE;
 
     if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
