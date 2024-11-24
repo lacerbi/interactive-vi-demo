@@ -273,8 +273,8 @@ const calculateElboComponents = useCallback((params = null) => {
     let crossEntropySum = 0;
     let entropySum = 0;
     
-    const GRID_SIZE = 100;
-    const GRID_EXTENT = 4; 
+    const GRID_SIZE = 50;
+    const GRID_EXTENT = 3; 
     const du = (2 * GRID_EXTENT) / GRID_SIZE;
 
     if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
