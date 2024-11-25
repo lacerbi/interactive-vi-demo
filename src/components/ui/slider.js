@@ -1,3 +1,5 @@
+// components/ui/slider.js
+
 import React from 'react';
 import * as RadixSlider from '@radix-ui/react-slider';
 
