@@ -20,7 +20,16 @@ export const STEP_SIZES = {
   FUNNEL: 0.1
 };
 
-// target log pdfs
+export const LOG_NORMALIZATION_CONSTANTS = {
+  BANANA: -0.693,
+  BIMODAL: 0,
+  NESSIE: 3.230,
+  MICKIE: 0,
+  RING: 6.22,
+  FUNNEL: 0
+};
+
+// target (unnormalized) log pdfs
 export const createTargetDistribution = (targetType) => {
   const distributions = {
     BANANA: (x, y) => {
@@ -76,8 +85,7 @@ export const createTargetDistribution = (targetType) => {
     FUNNEL: (x, y) => {
       const funnelBaseY = 150;
       const localVar = Math.exp(0.025 * (x - 200));
-      return logGaussian2d(x, y, 200, funnelBaseY, 2500, localVar * 2000, 0) + 
-             Math.log(0.4);
+      return logGaussian2d(x, y, 200, funnelBaseY, 2500, localVar * 2000, 0);
     }
   };
 

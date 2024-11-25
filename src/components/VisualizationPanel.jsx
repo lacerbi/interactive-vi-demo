@@ -1,6 +1,7 @@
 // components/VisualizationPanel.jsx
 import React, { useCallback } from 'react';
 import { POSTERIOR_TYPES, X_RANGE, Y_RANGE, DX, DY } from './constants';
+import { LOG_NORMALIZATION_CONSTANTS } from './distributions/targetDistributions';
 
 export function VisualizationPanel({
   // Data and display values
@@ -43,10 +44,14 @@ export function VisualizationPanel({
   
   // Type indicators
   posteriorType,
+  targetType,
   
   // Bounds for parameters
   bounds
 }) {
+  // Get step size based on target type
+  const LOG_Z = LOG_NORMALIZATION_CONSTANTS[targetType];
+
   // Helper function to generate ellipse path
   const generateEllipsePath = useCallback((centerX, centerY, sdMultiplier = 1, variance = null) => {
     const numPoints = 50;
@@ -201,6 +206,9 @@ export function VisualizationPanel({
       </text>
       <text x="20" y="60" className="font-mono text-sm" fill="#dc2626">
         Entropy: {elboComponents.entropy.toFixed(3)}
+      </text>
+      <text x="280" y="20" className="font-mono text-sm" fill="gray">
+        log Z: {LOG_Z}
       </text>
     </g>
   );

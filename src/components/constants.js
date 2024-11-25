@@ -32,10 +32,10 @@ export const POSTERIOR_TYPES = {
 export const BOUNDS = {
   meanX: [-3, 3],
   meanY: [-3, 3],
-  logVarX: [Math.log(400), Math.log(10000)],
-  logVarY: [Math.log(400), Math.log(10000)],
+  logVarX: [Math.log(400), Math.log(5000)],
+  logVarY: [Math.log(400), Math.log(5000)],
   logitCorr: [Math.log(0.005 / 0.995), Math.log(0.995 / 0.005)],
-  logVar: [Math.log(400), Math.log(10000)]
+  logVar: [Math.log(400), Math.log(5000)]
 };
 
 export const OPTIMIZATION_STEPS = 100;

@@ -130,6 +130,7 @@ const InteractiveVI = () => {
                 transformMeanY={transformMeanY}
                 transformVarForComponent={transformVarForComponent}
                 posteriorType={posteriorType}
+                targetType={currentTargetType}
                 bounds={BOUNDS}
               />
 
