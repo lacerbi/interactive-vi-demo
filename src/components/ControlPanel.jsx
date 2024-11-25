@@ -4,7 +4,8 @@ import React from 'react';
 import { Play } from 'lucide-react';
 import { Button } from './ui/button';
 import { Slider } from './ui/slider';
-import { POSTERIOR_TYPES, TARGET_TYPES, BOUNDS } from './constants';
+import { POSTERIOR_TYPES, BOUNDS } from './constants';
+import { TARGET_TYPES } from './distributions/targetDistributions';
 
 export function ControlPanel({
   // Distribution type states

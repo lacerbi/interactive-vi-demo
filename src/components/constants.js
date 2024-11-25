@@ -29,15 +29,6 @@ export const POSTERIOR_TYPES = {
   MIXTURE: 'Mixture of 3 equal-weight isotropic Gaussians'
 };
 
-export const TARGET_TYPES = {
-  BANANA: 'Banana',
-  BIMODAL: 'Bimodal',
-  NESSIE: 'Nessie',
-  MICKIE: 'Mickie',
-  RING: 'Ring',
-  FUNNEL: 'Funnel'
-};
-
 export const BOUNDS = {
   meanX: [-3, 3],
   meanY: [-3, 3],
@@ -45,15 +36,6 @@ export const BOUNDS = {
   logVarY: [Math.log(400), Math.log(10000)],
   logitCorr: [Math.log(0.005 / 0.995), Math.log(0.995 / 0.005)],
   logVar: [Math.log(400), Math.log(10000)]
-};
-
-export const STEP_SIZES = {
-  BANANA: 0.1,
-  BIMODAL: 0.1,
-  NESSIE: 0.1,
-  MICKIE: 0.1,
-  RING: 0.05,
-  FUNNEL: 0.1
 };
 
 export const OPTIMIZATION_STEPS = 100;
