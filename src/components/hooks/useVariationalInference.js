@@ -65,7 +65,7 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
   const STEP_SIZE = STEP_SIZES[targetType];
 
   // Get target distribution function
-  const targetDist = useCallback((x, y) => createTargetDistribution(targetType)(x, y), [targetType]);
+  const targetLogPdf = useCallback((x, y) => createTargetDistribution(targetType)(x, y), [targetType]);
 
   // Variational distribution
   const varDist = useCallback((x, y) => {
@@ -175,9 +175,9 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
                         );
                         
                         if(q > 1e-10) {
-                            const p = targetDist(x, y);
+                            const logp = targetLogPdf(x, y);
                             const contribution = WEIGHT * qComp * du * du * comp.v;
-                            crossEntropySum += contribution * Math.log(p + 1e-10);
+                            crossEntropySum += contribution * logp;
                             entropySum -= contribution * Math.log(q + 1e-10);
                         }
                     }
@@ -219,8 +219,8 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
                     const q = gaussian2d(x, y, tMx, tMy, vx, vy, rho);
                     
                     if(q > 1e-10) {
-                        const p = targetDist(x, y);
-                        crossEntropySum += q * Math.log(p + 1e-10) * du * du * jacobian;
+                        const logp = targetLogPdf(x, y);
+                        crossEntropySum += q * logp * du * du * jacobian;
                         entropySum -= q * Math.log(q) * du * du * jacobian;
                     }
                 }
@@ -233,7 +233,7 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
             elbo: crossEntropySum + entropySum
         };
       }, [
-        posteriorType, targetDist,
+        posteriorType, targetLogPdf,
         logVar1, logVar2, logVar3,
         logVarX, logVarY, logitCorr,
         mean1X, mean1Y, mean2X, mean2Y, mean3X, mean3Y,
@@ -417,12 +417,12 @@ const performOptimizationStep = useCallback(() => {
       for (let j = 0; j < GRID_SIZE; j++) {
         const x = X_RANGE[0] + (i + 0.5) * DX;
         const y = Y_RANGE[0] + (j + 0.5) * DY;
-        const density = targetDist(x, y);
-        data.push({ x, y, density });
+        const density = Math.exp(targetLogPdf(x, y));
+        data.push({ x, y, density })
       }
     }
     setGradientData(data);
-  }, [targetDist, targetType]);
+  }, [targetLogPdf, targetType]);
 
   // Effect for updating ELBO
   useEffect(() => {
