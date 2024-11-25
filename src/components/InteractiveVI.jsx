@@ -96,7 +96,7 @@ const InteractiveVI = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div className="grid grid-cols-[auto,1fr] gap-4">
+          <div className="grid grid-cols-[400px,1fr] gap-4">
             <div>
               <VisualizationPanel 
                 gradientData={gradientData}
