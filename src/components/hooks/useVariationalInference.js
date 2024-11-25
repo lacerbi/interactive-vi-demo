@@ -10,7 +10,7 @@ import {
   DX,
   DY
 } from '../constants';
-import { createTargetDistribution, STEP_SIZES, TARGET_TYPES } from '../distributions/targetDistributions';
+import { createTargetDistribution, STEP_SIZES } from '../distributions/targetDistributions';
 import { gaussian2d } from '../distributions/utils';
 
 export function useVariationalInference(initialTargetType = 'BANANA') {
@@ -65,48 +65,48 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
   const STEP_SIZE = STEP_SIZES[targetType];
 
   // Get target distribution function
-  const targetDist = useCallback(createTargetDistribution(targetType), [targetType]);
+  const targetDist = useCallback((x, y) => createTargetDistribution(targetType)(x, y), [targetType]);
 
- // Variational distribution
- const varDist = useCallback((x, y) => {
-  if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
-    const component1 = gaussian2d(
-      x, y,
-      transformMeanX(mean1X), transformMeanY(mean1Y),
-      transformVarForComponent(logVar1), transformVarForComponent(logVar1),
-      0
-    );
-    const component2 = gaussian2d(
-      x, y,
-      transformMeanX(mean2X), transformMeanY(mean2Y),
-      transformVarForComponent(logVar2), transformVarForComponent(logVar2),
-      0
-    );
-    const component3 = gaussian2d(
-      x, y,
-      transformMeanX(mean3X), transformMeanY(mean3Y),
-      transformVarForComponent(logVar3), transformVarForComponent(logVar3),
-      0
-    );
-    return (component1 + component2 + component3) / 3;
-  } else {
-    return gaussian2d(
-      x, y, 
-      transformMeanX(meanX), transformMeanY(meanY),
-      transformVarX(logVarX), transformVarY(logVarY), 
-      transformCorr(logitCorr)
-    );
-  }
-}, [
-  posteriorType,
-  transformMeanX, transformMeanY,
-  transformVarX, transformVarY,
-  transformCorr, transformVarForComponent,
-  mean1X, mean1Y, mean2X, mean2Y, mean3X, mean3Y,
-  meanX, meanY,
-  logVar1, logVar2, logVar3,
-  logVarX, logVarY, logitCorr
-]);
+  // Variational distribution
+  const varDist = useCallback((x, y) => {
+    if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
+      const component1 = gaussian2d(
+        x, y,
+        transformMeanX(mean1X), transformMeanY(mean1Y),
+        transformVarForComponent(logVar1), transformVarForComponent(logVar1),
+        0
+      );
+      const component2 = gaussian2d(
+        x, y,
+        transformMeanX(mean2X), transformMeanY(mean2Y),
+        transformVarForComponent(logVar2), transformVarForComponent(logVar2),
+        0
+      );
+      const component3 = gaussian2d(
+        x, y,
+        transformMeanX(mean3X), transformMeanY(mean3Y),
+        transformVarForComponent(logVar3), transformVarForComponent(logVar3),
+        0
+      );
+      return (component1 + component2 + component3) / 3;
+    } else {
+      return gaussian2d(
+        x, y, 
+        transformMeanX(meanX), transformMeanY(meanY),
+        transformVarX(logVarX), transformVarY(logVarY), 
+        transformCorr(logitCorr)
+      );
+    }
+  }, [
+    posteriorType,
+    transformMeanX, transformMeanY,
+    transformVarX, transformVarY,
+    transformCorr, transformVarForComponent,
+    mean1X, mean1Y, mean2X, mean2Y, mean3X, mean3Y,
+    meanX, meanY,
+    logVar1, logVar2, logVar3,
+    logVarX, logVarY, logitCorr
+  ]);
 
     // Calculate ELBO components for given parameters using q-aligned grid
     const calculateElboComponents = useCallback((params = null) => {
@@ -233,7 +233,7 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
             elbo: crossEntropySum + entropySum
         };
       }, [
-        posteriorType, targetDist, gaussian2d,
+        posteriorType, targetDist,
         logVar1, logVar2, logVar3,
         logVarX, logVarY, logitCorr,
         mean1X, mean1Y, mean2X, mean2Y, mean3X, mean3Y,
