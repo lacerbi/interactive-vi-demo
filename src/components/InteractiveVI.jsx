@@ -24,6 +24,27 @@ const InteractiveVI = () => {
     logVar1, setLogVar1,
     logVar2, setLogVar2,
     logVar3, setLogVar3,
+    mean1_10X, setMean1_10X,
+    mean1_10Y, setMean1_10Y,
+    mean2_10X, setMean2_10X,
+    mean2_10Y, setMean2_10Y,
+    mean3_10X, setMean3_10X,
+    mean3_10Y, setMean3_10Y,
+    mean4_10X, setMean4_10X,
+    mean4_10Y, setMean4_10Y,
+    mean5_10X, setMean5_10X,
+    mean5_10Y, setMean5_10Y,
+    mean6_10X, setMean6_10X,
+    mean6_10Y, setMean6_10Y,
+    mean7_10X, setMean7_10X,
+    mean7_10Y, setMean7_10Y,
+    mean8_10X, setMean8_10X,
+    mean8_10Y, setMean8_10Y,
+    mean9_10X, setMean9_10X,
+    mean9_10Y, setMean9_10Y,
+    mean10_10X, setMean10_10X,
+    mean10_10Y, setMean10_10Y,
+    logVar_10, setLogVar_10,
     isOptimizing, setIsOptimizing,
     optimizationStep, setOptimizationStep,
     posteriorType, setPosteriorType,
@@ -124,6 +145,47 @@ const InteractiveVI = () => {
                 setMean2Y={setMean2Y}
                 setMean3X={setMean3X}
                 setMean3Y={setMean3Y}
+                mean1_10X={mean1_10X}
+                mean1_10Y={mean1_10Y}
+                mean2_10X={mean2_10X}
+                mean2_10Y={mean2_10Y}
+                mean3_10X={mean3_10X}
+                mean3_10Y={mean3_10Y}
+                mean4_10X={mean4_10X}
+                mean4_10Y={mean4_10Y}
+                mean5_10X={mean5_10X}
+                mean5_10Y={mean5_10Y}
+                mean6_10X={mean6_10X}
+                mean6_10Y={mean6_10Y}
+                mean7_10X={mean7_10X}
+                mean7_10Y={mean7_10Y}
+                mean8_10X={mean8_10X}
+                mean8_10Y={mean8_10Y}
+                mean9_10X={mean9_10X}
+                mean9_10Y={mean9_10Y}
+                mean10_10X={mean10_10X}
+                mean10_10Y={mean10_10Y}
+                logVar_10={logVar_10}
+                setMean1_10X={setMean1_10X}
+                setMean1_10Y={setMean1_10Y}
+                setMean2_10X={setMean2_10X}
+                setMean2_10Y={setMean2_10Y}
+                setMean3_10X={setMean3_10X}
+                setMean3_10Y={setMean3_10Y}
+                setMean4_10X={setMean4_10X}
+                setMean4_10Y={setMean4_10Y}
+                setMean5_10X={setMean5_10X}
+                setMean5_10Y={setMean5_10Y}
+                setMean6_10X={setMean6_10X}
+                setMean6_10Y={setMean6_10Y}
+                setMean7_10X={setMean7_10X}
+                setMean7_10Y={setMean7_10Y}
+                setMean8_10X={setMean8_10X}
+                setMean8_10Y={setMean8_10Y}
+                setMean9_10X={setMean9_10X}
+                setMean9_10Y={setMean9_10Y}
+                setMean10_10X={setMean10_10X}
+                setMean10_10Y={setMean10_10Y}
                 setSelectedComponent={setSelectedComponent}
                 setIsDragging={setIsDragging}
                 transformMeanX={transformMeanX}
@@ -158,6 +220,8 @@ const InteractiveVI = () => {
               setLogVar1={setLogVar1}
               setLogVar2={setLogVar2}
               setLogVar3={setLogVar3}
+              logVar_10={logVar_10}
+              setLogVar_10={setLogVar_10}
               isOptimizing={isOptimizing}
               setIsOptimizing={setIsOptimizing}
               setOptimizationStep={setOptimizationStep}

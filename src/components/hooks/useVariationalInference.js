@@ -33,6 +33,29 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
   const [logVar2, setLogVar2] = useState(INITIAL_VALUES.logVar2);
   const [logVar3, setLogVar3] = useState(INITIAL_VALUES.logVar3);
   
+  // State for 10-mixture components
+  const [mean1_10X, setMean1_10X] = useState(INITIAL_VALUES.mean1_10X);
+  const [mean1_10Y, setMean1_10Y] = useState(INITIAL_VALUES.mean1_10Y);
+  const [mean2_10X, setMean2_10X] = useState(INITIAL_VALUES.mean2_10X);
+  const [mean2_10Y, setMean2_10Y] = useState(INITIAL_VALUES.mean2_10Y);
+  const [mean3_10X, setMean3_10X] = useState(INITIAL_VALUES.mean3_10X);
+  const [mean3_10Y, setMean3_10Y] = useState(INITIAL_VALUES.mean3_10Y);
+  const [mean4_10X, setMean4_10X] = useState(INITIAL_VALUES.mean4_10X);
+  const [mean4_10Y, setMean4_10Y] = useState(INITIAL_VALUES.mean4_10Y);
+  const [mean5_10X, setMean5_10X] = useState(INITIAL_VALUES.mean5_10X);
+  const [mean5_10Y, setMean5_10Y] = useState(INITIAL_VALUES.mean5_10Y);
+  const [mean6_10X, setMean6_10X] = useState(INITIAL_VALUES.mean6_10X);
+  const [mean6_10Y, setMean6_10Y] = useState(INITIAL_VALUES.mean6_10Y);
+  const [mean7_10X, setMean7_10X] = useState(INITIAL_VALUES.mean7_10X);
+  const [mean7_10Y, setMean7_10Y] = useState(INITIAL_VALUES.mean7_10Y);
+  const [mean8_10X, setMean8_10X] = useState(INITIAL_VALUES.mean8_10X);
+  const [mean8_10Y, setMean8_10Y] = useState(INITIAL_VALUES.mean8_10Y);
+  const [mean9_10X, setMean9_10X] = useState(INITIAL_VALUES.mean9_10X);
+  const [mean9_10Y, setMean9_10Y] = useState(INITIAL_VALUES.mean9_10Y);
+  const [mean10_10X, setMean10_10X] = useState(INITIAL_VALUES.mean10_10X);
+  const [mean10_10Y, setMean10_10Y] = useState(INITIAL_VALUES.mean10_10Y);
+  const [logVar_10, setLogVar_10] = useState(INITIAL_VALUES.logVar_10);
+
   // UI and optimization state
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [optimizationStep, setOptimizationStep] = useState(0);
@@ -69,7 +92,31 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
 
   // Variational distribution
   const varDist = useCallback((x, y) => {
-    if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
+    if (posteriorType === POSTERIOR_TYPES.MIXTURE_10) {
+      const components = [
+        gaussian2d(x, y, transformMeanX(mean1_10X), transformMeanY(mean1_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0),
+        gaussian2d(x, y, transformMeanX(mean2_10X), transformMeanY(mean2_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0),
+        gaussian2d(x, y, transformMeanX(mean3_10X), transformMeanY(mean3_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0),
+        gaussian2d(x, y, transformMeanX(mean4_10X), transformMeanY(mean4_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0),
+        gaussian2d(x, y, transformMeanX(mean5_10X), transformMeanY(mean5_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0),
+        gaussian2d(x, y, transformMeanX(mean6_10X), transformMeanY(mean6_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0),
+        gaussian2d(x, y, transformMeanX(mean7_10X), transformMeanY(mean7_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0),
+        gaussian2d(x, y, transformMeanX(mean8_10X), transformMeanY(mean8_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0),
+        gaussian2d(x, y, transformMeanX(mean9_10X), transformMeanY(mean9_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0),
+        gaussian2d(x, y, transformMeanX(mean10_10X), transformMeanY(mean10_10Y), 
+          transformVarForComponent(logVar_10), transformVarForComponent(logVar_10), 0)
+      ];
+      return components.reduce((sum, c) => sum + c, 0) / 10;
+    } else if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
       const component1 = gaussian2d(
         x, y,
         transformMeanX(mean1X), transformMeanY(mean1Y),
@@ -105,7 +152,11 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
     mean1X, mean1Y, mean2X, mean2Y, mean3X, mean3Y,
     meanX, meanY,
     logVar1, logVar2, logVar3,
-    logVarX, logVarY, logitCorr
+    logVarX, logVarY, logitCorr,
+    mean1_10X, mean1_10Y, mean2_10X, mean2_10Y, mean3_10X, mean3_10Y,
+    mean4_10X, mean4_10Y, mean5_10X, mean5_10Y, mean6_10X, mean6_10Y,
+    mean7_10X, mean7_10Y, mean8_10X, mean8_10Y, mean9_10X, mean9_10Y,
+    mean10_10X, mean10_10Y, logVar_10
   ]);
 
     // Calculate ELBO components for given parameters using q-aligned grid
@@ -117,7 +168,81 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
         const GRID_EXTENT = 3; 
         const du = (2 * GRID_EXTENT) / GRID_SIZE;
 
-        if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
+        if (posteriorType === POSTERIOR_TYPES.MIXTURE_10) {
+          // Parameters for 10-component mixture case with shared variance
+          const {
+              mean1_10X: m1x = mean1_10X,
+              mean1_10Y: m1y = mean1_10Y,
+              mean2_10X: m2x = mean2_10X,
+              mean2_10Y: m2y = mean2_10Y,
+              mean3_10X: m3x = mean3_10X,
+              mean3_10Y: m3y = mean3_10Y,
+              mean4_10X: m4x = mean4_10X,
+              mean4_10Y: m4y = mean4_10Y,
+              mean5_10X: m5x = mean5_10X,
+              mean5_10Y: m5y = mean5_10Y,
+              mean6_10X: m6x = mean6_10X,
+              mean6_10Y: m6y = mean6_10Y,
+              mean7_10X: m7x = mean7_10X,
+              mean7_10Y: m7y = mean7_10Y,
+              mean8_10X: m8x = mean8_10X,
+              mean8_10Y: m8y = mean8_10Y,
+              mean9_10X: m9x = mean9_10X,
+              mean9_10Y: m9y = mean9_10Y,
+              mean10_10X: m10x = mean10_10X,
+              mean10_10Y: m10y = mean10_10Y,
+              logVar_10: lv = logVar_10
+          } = params || {};
+  
+          const gaussianDensity = (x, y, mx, my, v) => {
+              const dx = x - mx;
+              const dy = y - my;
+              return Math.exp(-(dx * dx + dy * dy) / (2 * v)) / (2 * Math.PI * v);
+          };
+  
+          const WEIGHT = 1/10;
+          
+          const components = [
+              { mx: transformMeanX(m1x), my: transformMeanY(m1y) },
+              { mx: transformMeanX(m2x), my: transformMeanY(m2y) },
+              { mx: transformMeanX(m3x), my: transformMeanY(m3y) },
+              { mx: transformMeanX(m4x), my: transformMeanY(m4y) },
+              { mx: transformMeanX(m5x), my: transformMeanY(m5y) },
+              { mx: transformMeanX(m6x), my: transformMeanY(m6y) },
+              { mx: transformMeanX(m7x), my: transformMeanY(m7y) },
+              { mx: transformMeanX(m8x), my: transformMeanY(m8y) },
+              { mx: transformMeanX(m9x), my: transformMeanY(m9y) },
+              { mx: transformMeanX(m10x), my: transformMeanY(m10y) }
+          ];
+  
+          const v = transformVarForComponent(lv);
+          const sqrtV = Math.sqrt(v);
+          
+          components.forEach(comp => {
+              for(let i = 0; i < GRID_SIZE; i++) {
+                  for(let j = 0; j < GRID_SIZE; j++) {
+                      const u = -GRID_EXTENT + (i + 0.5) * du;
+                      const w = -GRID_EXTENT + (j + 0.5) * du;
+                      
+                      const x = comp.mx + u * sqrtV;
+                      const y = comp.my + w * sqrtV;
+                      
+                      const qComp = gaussianDensity(x, y, comp.mx, comp.my, v);
+                      
+                      const q = WEIGHT * components.reduce((sum, c) => 
+                          sum + gaussianDensity(x, y, c.mx, c.my, v), 0
+                      );
+                      
+                      if(q > 1e-10) {
+                          const logp = targetLogPdf(x, y);
+                          const contribution = WEIGHT * qComp * du * du * v;
+                          crossEntropySum += contribution * logp;
+                          entropySum -= contribution * Math.log(q + 1e-10);
+                      }
+                  }
+              }
+          });
+        } else if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
             // Parameters for mixture case
             const {
                 mean1X: m1x = mean1X,
@@ -238,6 +363,10 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
         logVarX, logVarY, logitCorr,
         mean1X, mean1Y, mean2X, mean2Y, mean3X, mean3Y,
         meanX, meanY,
+        mean1_10X, mean1_10Y, mean2_10X, mean2_10Y, mean3_10X, mean3_10Y,
+        mean4_10X, mean4_10Y, mean5_10X, mean5_10Y, mean6_10X, mean6_10Y,
+        mean7_10X, mean7_10Y, mean8_10X, mean8_10Y, mean9_10X, mean9_10Y,
+        mean10_10X, mean10_10Y, logVar_10,
         transformCorr, transformMeanX, transformMeanY,
         transformVarForComponent, transformVarX, transformVarY
       ]);
@@ -246,7 +375,133 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
   const calculateGradient = useCallback(() => {
     const h = 1e-3;
     
-    if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
+    if (posteriorType === POSTERIOR_TYPES.MIXTURE_10) {
+      const baseParams = {
+          mean1_10X, mean1_10Y,
+          mean2_10X, mean2_10Y,
+          mean3_10X, mean3_10Y,
+          mean4_10X, mean4_10Y,
+          mean5_10X, mean5_10Y,
+          mean6_10X, mean6_10Y,
+          mean7_10X, mean7_10Y,
+          mean8_10X, mean8_10Y,
+          mean9_10X, mean9_10Y,
+          mean10_10X, mean10_10Y,
+          logVar_10
+      };
+      const baseElbo = calculateElboComponents(baseParams).elbo;
+      
+      const gradients = {
+          dMean1_10X: 0, dMean1_10Y: 0,
+          dMean2_10X: 0, dMean2_10Y: 0,
+          dMean3_10X: 0, dMean3_10Y: 0,
+          dMean4_10X: 0, dMean4_10Y: 0,
+          dMean5_10X: 0, dMean5_10Y: 0,
+          dMean6_10X: 0, dMean6_10Y: 0,
+          dMean7_10X: 0, dMean7_10Y: 0,
+          dMean8_10X: 0, dMean8_10Y: 0,
+          dMean9_10X: 0, dMean9_10Y: 0,
+          dMean10_10X: 0, dMean10_10Y: 0,
+          dLogVar_10: 0
+      };
+      
+      // Component 1
+      gradients.dMean1_10X = (calculateElboComponents({
+          ...baseParams, mean1_10X: mean1_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean1_10Y = (calculateElboComponents({
+          ...baseParams, mean1_10Y: mean1_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Component 2
+      gradients.dMean2_10X = (calculateElboComponents({
+          ...baseParams, mean2_10X: mean2_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean2_10Y = (calculateElboComponents({
+          ...baseParams, mean2_10Y: mean2_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Component 3
+      gradients.dMean3_10X = (calculateElboComponents({
+          ...baseParams, mean3_10X: mean3_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean3_10Y = (calculateElboComponents({
+          ...baseParams, mean3_10Y: mean3_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Component 4
+      gradients.dMean4_10X = (calculateElboComponents({
+          ...baseParams, mean4_10X: mean4_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean4_10Y = (calculateElboComponents({
+          ...baseParams, mean4_10Y: mean4_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Component 5
+      gradients.dMean5_10X = (calculateElboComponents({
+          ...baseParams, mean5_10X: mean5_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean5_10Y = (calculateElboComponents({
+          ...baseParams, mean5_10Y: mean5_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Component 6
+      gradients.dMean6_10X = (calculateElboComponents({
+          ...baseParams, mean6_10X: mean6_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean6_10Y = (calculateElboComponents({
+          ...baseParams, mean6_10Y: mean6_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Component 7
+      gradients.dMean7_10X = (calculateElboComponents({
+          ...baseParams, mean7_10X: mean7_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean7_10Y = (calculateElboComponents({
+          ...baseParams, mean7_10Y: mean7_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Component 8
+      gradients.dMean8_10X = (calculateElboComponents({
+          ...baseParams, mean8_10X: mean8_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean8_10Y = (calculateElboComponents({
+          ...baseParams, mean8_10Y: mean8_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Component 9
+      gradients.dMean9_10X = (calculateElboComponents({
+          ...baseParams, mean9_10X: mean9_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean9_10Y = (calculateElboComponents({
+          ...baseParams, mean9_10Y: mean9_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Component 10
+      gradients.dMean10_10X = (calculateElboComponents({
+          ...baseParams, mean10_10X: mean10_10X + h
+      }).elbo - baseElbo) / h;
+      
+      gradients.dMean10_10Y = (calculateElboComponents({
+          ...baseParams, mean10_10Y: mean10_10Y + h
+      }).elbo - baseElbo) / h;
+      
+      // Shared variance
+      gradients.dLogVar_10 = (calculateElboComponents({
+          ...baseParams, logVar_10: logVar_10 + h
+      }).elbo - baseElbo) / h;
+      
+      return gradients;
+    } else if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
         const baseParams = {
             mean1X, mean1Y, logVar1,
             mean2X, mean2Y, logVar2,
@@ -350,14 +605,75 @@ export function useVariationalInference(initialTargetType = 'BANANA') {
     logVar1, logVar2, logVar3,
     logVarX, logVarY, logitCorr,
     mean1X, mean1Y, mean2X, mean2Y, mean3X, mean3Y,
-    meanX, meanY
+    meanX, meanY,
+    mean1_10X, mean1_10Y, mean2_10X, mean2_10Y,
+    mean3_10X, mean3_10Y, mean4_10X, mean4_10Y,
+    mean5_10X, mean5_10Y, mean6_10X, mean6_10Y,
+    mean7_10X, mean7_10Y, mean8_10X, mean8_10Y,
+    mean9_10X, mean9_10Y, mean10_10X, mean10_10Y,
+    logVar_10
   ]);
 
 // Perform one step of gradient ascent
 const performOptimizationStep = useCallback(() => {
     const gradient = calculateGradient();
       
-    if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
+    if (posteriorType === POSTERIOR_TYPES.MIXTURE_10) {      
+      setMean1_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean1_10X * STEP_SIZE)));
+      setMean1_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean1_10Y * STEP_SIZE)));
+      
+      setMean2_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean2_10X * STEP_SIZE)));
+      setMean2_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean2_10Y * STEP_SIZE)));
+      
+      setMean3_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean3_10X * STEP_SIZE)));
+      setMean3_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean3_10Y * STEP_SIZE)));
+      
+      setMean4_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean4_10X * STEP_SIZE)));
+      setMean4_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean4_10Y * STEP_SIZE)));
+      
+      setMean5_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean5_10X * STEP_SIZE)));
+      setMean5_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean5_10Y * STEP_SIZE)));
+      
+      setMean6_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean6_10X * STEP_SIZE)));
+      setMean6_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean6_10Y * STEP_SIZE)));
+      
+      setMean7_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean7_10X * STEP_SIZE)));
+      setMean7_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean7_10Y * STEP_SIZE)));
+      
+      setMean8_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean8_10X * STEP_SIZE)));
+      setMean8_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean8_10Y * STEP_SIZE)));
+      
+      setMean9_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean9_10X * STEP_SIZE)));
+      setMean9_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean9_10Y * STEP_SIZE)));
+      
+      setMean10_10X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
+          prev + gradient.dMean10_10X * STEP_SIZE)));
+      setMean10_10Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
+          prev + gradient.dMean10_10Y * STEP_SIZE)));
+      
+      setLogVar_10(prev => Math.max(BOUNDS.logVar[0], Math.min(BOUNDS.logVar[1], 
+          prev + gradient.dLogVar_10 * STEP_SIZE)));
+
+    } else if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
+
       setMean1X(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
         prev + gradient.dMean1X * STEP_SIZE)));
       setMean1Y(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
@@ -378,7 +694,9 @@ const performOptimizationStep = useCallback(() => {
         prev + gradient.dMean3Y * STEP_SIZE)));
       setLogVar3(prev => Math.max(BOUNDS.logVar[0], Math.min(BOUNDS.logVar[1], 
         prev + gradient.dLogVar3 * STEP_SIZE)));
+
     } else {
+      
       setMeanX(prev => Math.max(BOUNDS.meanX[0], Math.min(BOUNDS.meanX[1], 
         prev + gradient.dMeanX * STEP_SIZE)));
       setMeanY(prev => Math.max(BOUNDS.meanY[0], Math.min(BOUNDS.meanY[1], 
@@ -432,7 +750,30 @@ const performOptimizationStep = useCallback(() => {
 
   // Handle reset of posterior values
   const handleReset = useCallback(() => {
-    if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
+    if (posteriorType === POSTERIOR_TYPES.MIXTURE_10) {
+      setMean1_10X(INITIAL_VALUES.mean1_10X);
+      setMean1_10Y(INITIAL_VALUES.mean1_10Y);
+      setMean2_10X(INITIAL_VALUES.mean2_10X);
+      setMean2_10Y(INITIAL_VALUES.mean2_10Y);
+      setMean3_10X(INITIAL_VALUES.mean3_10X);
+      setMean3_10Y(INITIAL_VALUES.mean3_10Y);
+      setMean4_10X(INITIAL_VALUES.mean4_10X);
+      setMean4_10Y(INITIAL_VALUES.mean4_10Y);
+      setMean5_10X(INITIAL_VALUES.mean5_10X);
+      setMean5_10Y(INITIAL_VALUES.mean5_10Y);
+      setMean6_10X(INITIAL_VALUES.mean6_10X);
+      setMean6_10Y(INITIAL_VALUES.mean6_10Y);
+      setMean7_10X(INITIAL_VALUES.mean7_10X);
+      setMean7_10Y(INITIAL_VALUES.mean7_10Y);
+      setMean8_10X(INITIAL_VALUES.mean8_10X);
+      setMean8_10Y(INITIAL_VALUES.mean8_10Y);
+      setMean9_10X(INITIAL_VALUES.mean9_10X);
+      setMean9_10Y(INITIAL_VALUES.mean9_10Y);
+      setMean10_10X(INITIAL_VALUES.mean10_10X);
+      setMean10_10Y(INITIAL_VALUES.mean10_10Y);
+      setLogVar_10(INITIAL_VALUES.logVar_10);
+      setSelectedComponent(null);
+    } else if (posteriorType === POSTERIOR_TYPES.MIXTURE) {
         setMean1X(INITIAL_VALUES.mean1X);
         setMean1Y(INITIAL_VALUES.mean1Y);
         setMean2X(INITIAL_VALUES.mean2X);
@@ -482,6 +823,27 @@ const performOptimizationStep = useCallback(() => {
     logVar1, setLogVar1,
     logVar2, setLogVar2,
     logVar3, setLogVar3,
+    mean1_10X, setMean1_10X,
+    mean1_10Y, setMean1_10Y,
+    mean2_10X, setMean2_10X,
+    mean2_10Y, setMean2_10Y,
+    mean3_10X, setMean3_10X,
+    mean3_10Y, setMean3_10Y,
+    mean4_10X, setMean4_10X,
+    mean4_10Y, setMean4_10Y,
+    mean5_10X, setMean5_10X,
+    mean5_10Y, setMean5_10Y,
+    mean6_10X, setMean6_10X,
+    mean6_10Y, setMean6_10Y,
+    mean7_10X, setMean7_10X,
+    mean7_10Y, setMean7_10Y,
+    mean8_10X, setMean8_10X,
+    mean8_10Y, setMean8_10Y,
+    mean9_10X, setMean9_10X,
+    mean9_10Y, setMean9_10Y,
+    mean10_10X, setMean10_10X,
+    mean10_10Y, setMean10_10Y,
+    logVar_10, setLogVar_10,
     isOptimizing, setIsOptimizing,
     optimizationStep, setOptimizationStep,
     posteriorType, setPosteriorType,

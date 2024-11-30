@@ -18,8 +18,8 @@ export function ControlPanel({
   displayVarX,
   displayVarY,
   displayCorr,
-  logVarX,  // Added
-  logVarY,  // Added
+  logVarX,
+  logVarY,
   
   // Parameter setters
   setLogVarX,
@@ -27,12 +27,14 @@ export function ControlPanel({
   setLogitCorr,
   
   // Mixture component states and setters
-  logVar1,  // Added
-  logVar2,  // Added
-  logVar3,  // Added
+  logVar1,
+  logVar2,
+  logVar3,
   setLogVar1,
   setLogVar2,
   setLogVar3,
+  logVar_10,
+  setLogVar_10,
   
   // Optimization state and controls
   isOptimizing,
@@ -93,7 +95,8 @@ export function ControlPanel({
       </div>
 
       {/* Controls for regular Gaussian */}
-      {posteriorType !== POSTERIOR_TYPES.MIXTURE && (
+      {posteriorType !== POSTERIOR_TYPES.MIXTURE && 
+        posteriorType !== POSTERIOR_TYPES.MIXTURE_10 && (
         <div className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-medium">X Scale</label>
@@ -145,6 +148,25 @@ export function ControlPanel({
               max={2 / (1 + Math.exp(-BOUNDS.logitCorr[1])) - 1}
               step={0.01}
               disabled={posteriorType !== POSTERIOR_TYPES.FULL}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Controls for 10-component mixture */}
+      {posteriorType === POSTERIOR_TYPES.MIXTURE_10 && (
+        <div className="space-y-6">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+              <label className="text-sm font-medium">Shared Component Scale</label>
+            </div>
+            <Slider 
+              value={[Math.sqrt(Math.exp(logVar_10))]}
+              onValueChange={([v]) => setLogVar_10(Math.log(v * v))}
+              min={Math.sqrt(Math.exp(BOUNDS.logVar[0]))}
+              max={Math.sqrt(Math.exp(BOUNDS.logVar[1]))}
+              step={1}
             />
           </div>
         </div>
