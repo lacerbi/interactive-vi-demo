@@ -15,7 +15,7 @@ function App() {
           <div className="flex justify-between items-center text-sm">
             <div>
               <a 
-                href="[YOUR_BLOG_POST_URL]" 
+                href="https://lacerbi.github.io/blog/2024/vi-is-inference-is-optimization/" 
                 className="text-blue-600 hover:text-blue-800"
                 target="_blank"
                 rel="noopener noreferrer"
