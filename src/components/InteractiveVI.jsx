@@ -108,7 +108,7 @@ const InteractiveVI = () => {
   // Description text based on optimization state
   const descriptionText = isOptimizing
     ? `Optimization will run for ${OPTIMIZATION_STEPS} steps...\nStep ${optimizationStep}/${OPTIMIZATION_STEPS}`
-    : "Drag the red distribution and adjust its shape to find the best approximation of the target (blue density). Press Optimize to start gradient ascent from the current configuration.";
+    : "Drag the distribution component(s) and adjust their shape to find the best approximation of the target (blue density). Press Optimize to start gradient ascent from the current configuration.";
 
   return (
     <Card className="w-full max-w-2xl">
